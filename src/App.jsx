@@ -5,13 +5,15 @@ const App = () => {
   const [weather, setWeather] = useState(null);
   const [city, setCity] = useState("");
   const [suggestion, setSuggestion] = useState([]);
+  const [unit, setUnit] = useState("C");
+  const [error, setError] = useState(``);
 
   const API_KEY = "eac64df6e3cb857ffe0ca197ac0a8679";
 
   // Function to fetch weather by city name
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!city) return;
+    if (!city) return setError("please enter a valid city name.");
 
     try {
       const res = await fetch(
@@ -85,6 +87,21 @@ const App = () => {
               >
                 Search Again
               </button>
+              <div className="flex justify-between items-center">
+                <h2 className="text-3xl font-bold">{weather.name}</h2>
+                <button
+                  onClick={() => setUnit((u) => ("C" ? "F" : "C"))}
+                  className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-1 px-3 rounded trasnsition-colors"
+                >
+                  &deg;{unit}
+                </button>
+              </div>
+
+              <img
+                src={`https://api.openweathermap.org/img/wn/${weather.weather[0].icon}@2px.png`}
+                alt={weather.weather[0].description}
+                className="max-auto my-4 animate-bounce"
+              />
             </div>
           )}
         </div>
